@@ -31,7 +31,7 @@ public class Reserva {
     )
     private List<Usuario> usuarios = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "sala_id", referencedColumnName = "id")
     private Sala sala;
 
