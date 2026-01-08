@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -71,4 +72,42 @@ class UsuarioControllerTest {
         assertEquals(400, response.getStatus());
     }
 
+    @Test
+    @DisplayName("Deveria retornar 200 caso usuário atualize corretamente")
+    public void atualizarCenario01() throws Exception {
+
+        // ARRANGE
+        AtualizarUsuarioDTO dto = new AtualizarUsuarioDTO("Wellington", "well@gmail.com");
+        int id = 1;
+
+        // ACTION
+        var response = mockMvc.perform(
+                put("/user/{id}", id)
+                        .content(atualizarJsonDTO.write(dto).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        // ASSERT
+        assertEquals(200, response.getStatus());
+        assertEquals("Usuário atualizado com sucesso", response.getContentAsString());
+    }
+
+    @Test
+    @DisplayName("Deveria retornar 400 caso usuário não atualize corretamente")
+    public void atualizarCenario02() throws Exception {
+
+        // ARRANGE
+        AtualizarUsuarioDTO dto = new AtualizarUsuarioDTO("", "well@gmail.com");
+        int id = 1;
+
+        // ACTION
+        var response = mockMvc.perform(
+                put("/user/{id}", id)
+                        .content(atualizarJsonDTO.write(dto).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        // ASSERT
+        assertEquals(400, response.getStatus());
+    }
 }
