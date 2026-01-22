@@ -35,12 +35,17 @@ public class UsuarioService {
         validationsCadastroUsuario.forEach(validation -> validation.validation(dto));
 
         Usuario usuario = new Usuario();
+
+        // Adicionar criptografia da senha antes de salvar
+
         usuario.cadastrarUsuario(dto);
         usuarioRepository.save(usuario);
     }
 
     public void login(LoginUsuarioDTO dto) {
         validationsLogin.forEach(validation -> validation.validation(dto));
+
+        // Adicionar busca no banco de dados para saber se usuario pode logar
     }
 
     public void update(AtualizarUsuarioDTO dto, UUID id) {
